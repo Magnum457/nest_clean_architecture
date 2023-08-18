@@ -1,16 +1,12 @@
-import { faker } from '@faker-js/faker';
 import { UserEntity, UserProps } from '../../user.entity';
+import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 
 describe('UserEntity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
 
   beforeEach(() => {
-    props = {
-      name: faker.person.firstName(),
-      email: faker.internet.email(),
-      senha: faker.internet.password(),
-    };
+    props = UserDataBuilder({});
     sut = new UserEntity(props);
   });
 
