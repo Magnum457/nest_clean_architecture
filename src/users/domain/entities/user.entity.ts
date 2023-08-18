@@ -17,7 +17,7 @@ export class UserEntity extends Entity<UserProps> {
     this.name = value;
   }
 
-  updatePassword(value: string): void {
+  updateSenha(value: string): void {
     this.senha = value;
   }
 
