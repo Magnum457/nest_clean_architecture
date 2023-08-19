@@ -3,8 +3,13 @@ import { Entity } from '@/shared/domain/entities/entity';
 export type UserProps = {
   name: string;
   email: string;
-  senha: string;
+  password: string;
   created_at?: Date;
+};
+
+export type UserUpdateProps = {
+  name?: string;
+  email?: string;
 };
 
 export class UserEntity extends Entity<UserProps> {
@@ -13,12 +18,13 @@ export class UserEntity extends Entity<UserProps> {
     this.props.created_at = this.props.created_at ?? new Date();
   }
 
-  update(value: string): void {
-    this.name = value;
+  update(updateProps: UserUpdateProps): void {
+    this.name = updateProps.name ?? this.name;
+    this.email = updateProps.email ?? this.email;
   }
 
-  updateSenha(value: string): void {
-    this.senha = value;
+  updatePassword(value: string): void {
+    this.password = value;
   }
 
   get name() {
@@ -33,12 +39,16 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.email;
   }
 
-  get senha() {
-    return this.props.senha;
+  private set email(value: string) {
+    this.props.email = value;
   }
 
-  private set senha(value: string) {
-    this.props.senha = value;
+  get password() {
+    return this.props.password;
+  }
+
+  private set password(value: string) {
+    this.props.password = value;
   }
 
   get created_at() {

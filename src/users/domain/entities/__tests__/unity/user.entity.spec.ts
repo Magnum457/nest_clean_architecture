@@ -13,7 +13,7 @@ describe('UserEntity unit tests', () => {
   it('Constructor method', () => {
     expect(sut.props.name).toBe(props.name);
     expect(sut.props.email).toBe(props.email);
-    expect(sut.props.senha).toBe(props.senha);
+    expect(sut.props.password).toBe(props.password);
     expect(sut.props.created_at).toBeInstanceOf(Date);
   });
 
@@ -35,16 +35,22 @@ describe('UserEntity unit tests', () => {
     expect(typeof sut.props.email).toBe('string');
   });
 
-  it('Getter of senha field', () => {
-    expect(sut.props.senha).toBeDefined();
-    expect(sut.props.senha).toEqual(props.senha);
-    expect(typeof sut.props.senha).toBe('string');
+  it('Setter of email field', () => {
+    sut['email'] = 'other email';
+    expect(sut.props.email).toEqual('other email');
+    expect(typeof sut.props.email).toBe('string');
   });
 
-  it('Setter of senha field', () => {
-    sut['senha'] = 'other senha';
-    expect(sut.props.senha).toEqual('other senha');
-    expect(typeof sut.props.senha).toBe('string');
+  it('Getter of password field', () => {
+    expect(sut.props.password).toBeDefined();
+    expect(sut.props.password).toEqual(props.password);
+    expect(typeof sut.props.password).toBe('string');
+  });
+
+  it('Setter of password field', () => {
+    sut['password'] = 'other password';
+    expect(sut.props.password).toEqual('other password');
+    expect(typeof sut.props.password).toBe('string');
   });
 
   it('Getter of created_at field', () => {
@@ -53,12 +59,17 @@ describe('UserEntity unit tests', () => {
   });
 
   it('Should update a name user', () => {
-    sut.update('other name');
+    sut.update({ name: 'other name' });
     expect(sut.props.name).toEqual('other name');
   });
 
+  it('Should update a email user', () => {
+    sut.update({ email: 'other email' });
+    expect(sut.props.email).toEqual('other email');
+  });
+
   it('Should update a password user', () => {
-    sut.updateSenha('other senha');
-    expect(sut.props.senha).toEqual('other senha');
+    sut.updatePassword('other password');
+    expect(sut.props.password).toEqual('other password');
   });
 });
