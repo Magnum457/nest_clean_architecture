@@ -1,8 +1,10 @@
 import {
   IsDate,
+  IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsStrongPassword,
   MaxLength,
 } from 'class-validator';
 import { UserProps } from '../entities/user.entity';
@@ -16,6 +18,7 @@ export class UserRules {
 
   @MaxLength(255)
   @IsString()
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 
