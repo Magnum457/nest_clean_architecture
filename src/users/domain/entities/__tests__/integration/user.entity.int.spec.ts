@@ -51,7 +51,18 @@ describe('UserEntity integration tests', () => {
       props = { ...UserDataBuilder({}), password: 10 as any };
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
 
-      props = { ...UserDataBuilder({}), password: 'f'.repeat(256) };
+      props = { ...UserDataBuilder({}), password: 'f'.repeat(101) };
+      expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
+    });
+
+    it('Should throw an error when creating a user with invalid created_at', () => {
+      let props: UserProps = {
+        ...UserDataBuilder({}),
+        created_at: 10 as any,
+      };
+      expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
+
+      props = { ...UserDataBuilder({}), created_at: '2023' as any };
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
     });
   });
