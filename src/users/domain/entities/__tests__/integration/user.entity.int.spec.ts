@@ -1,5 +1,8 @@
-import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import { UserEntity, UserProps } from '../../user.entity';
+import {
+  UserDataBuilder,
+  UserUpdateDataBuilder,
+} from '@/users/domain/testing/helpers/user-data-builder';
+import { UserEntity, UserProps, UserUpdateProps } from '../../user.entity';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 
 describe('UserEntity integration tests', () => {
@@ -73,6 +76,74 @@ describe('UserEntity integration tests', () => {
         ...UserDataBuilder({}),
       };
       new UserEntity(props);
+    });
+  });
+
+  describe('Update method', () => {
+    it('Should throw an error when updating a user with invalid name', () => {
+      const entity = new UserEntity(UserDataBuilder({}));
+
+      let updateProps: UserUpdateProps = {
+        ...UserUpdateDataBuilder({}),
+        name: null,
+      };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), name: '' };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), name: 10 as any };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), name: 'f'.repeat(256) };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+    });
+
+    it('Should throw an error when updating a user with invalid email', () => {
+      const entity = new UserEntity(UserDataBuilder({}));
+
+      let updateProps: UserUpdateProps = {
+        ...UserUpdateDataBuilder({}),
+        email: null,
+      };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), email: '' };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), email: 10 as any };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+
+      updateProps = { ...UserUpdateDataBuilder({}), email: 'f'.repeat(256) };
+      expect(() => entity.update(updateProps)).toThrowError(
+        EntityValidationError,
+      );
+    });
+
+    it('Should a valid update user', () => {
+      expect.assertions(0);
+
+      const props: UserProps = {
+        ...UserDataBuilder({}),
+      };
+      const updateProps: UserUpdateProps = { ...UserUpdateDataBuilder({}) };
+      const entity = new UserEntity(props);
+
+      entity.update(updateProps);
     });
   });
 });

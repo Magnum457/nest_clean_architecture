@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserProps } from '../../entities/user.entity';
+import { UserProps, UserUpdateProps } from '../../entities/user.entity';
 
 type Props = {
   name?: string;
@@ -13,5 +13,12 @@ export function UserDataBuilder(props: Props): UserProps {
     email: props.email ?? faker.internet.email(),
     password: props.password ?? faker.internet.password(),
     created_at: props.created_at ?? new Date(),
+  };
+}
+// Pesquisar se é necessário criar um databuilder específico para o update
+export function UserUpdateDataBuilder(props: Props): UserUpdateProps {
+  return {
+    name: props.name ?? faker.person.fullName(),
+    email: props.email ?? faker.internet.email(),
   };
 }
