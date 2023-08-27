@@ -4,15 +4,17 @@ import {
   UserValidator,
   UserValidatorFactory,
 } from '../../user.validator';
+import { UserProps } from '@/users/domain/entities/user.entity';
 
 let sut: UserValidator;
+let props: UserProps;
 
 describe('ClassValidatorFields integration tests', () => {
   beforeEach(() => {
     sut = UserValidatorFactory.create();
+    props = UserDataBuilder({});
   });
   it('Valid case for user validator class', () => {
-    const props = UserDataBuilder({});
     const isValid = sut.validate(props);
     expect(isValid).toBeTruthy();
     expect(sut.validatedData).toStrictEqual(new UserRules(props));
@@ -27,18 +29,18 @@ describe('ClassValidatorFields integration tests', () => {
         'name must be shorter than or equal to 255 characters',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), name: '' as any });
+      isValid = sut.validate({ ...props, name: '' as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['name']).toStrictEqual(['name should not be empty']);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), name: 555 as any });
+      isValid = sut.validate({ ...props, name: 555 as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['name']).toStrictEqual([
         'name must be a string',
         'name must be shorter than or equal to 255 characters',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), name: 'f'.repeat(256) });
+      isValid = sut.validate({ ...props, name: 'f'.repeat(256) });
       expect(isValid).toBeFalsy();
       expect(sut.errors['name']).toStrictEqual([
         'name must be shorter than or equal to 255 characters',
@@ -57,14 +59,14 @@ describe('ClassValidatorFields integration tests', () => {
         'email must be shorter than or equal to 255 characters',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), email: '' as any });
+      isValid = sut.validate({ ...props, email: '' as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['email']).toStrictEqual([
         'email should not be empty',
         'email must be an email',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), email: 555 as any });
+      isValid = sut.validate({ ...props, email: 555 as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['email']).toStrictEqual([
         'email must be an email',
@@ -73,7 +75,7 @@ describe('ClassValidatorFields integration tests', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 'f'.repeat(256),
       });
       expect(isValid).toBeFalsy();
@@ -94,13 +96,13 @@ describe('ClassValidatorFields integration tests', () => {
         'password must be shorter than or equal to 100 characters',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), password: '' as any });
+      isValid = sut.validate({ ...props, password: '' as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['password']).toStrictEqual([
         'password should not be empty',
       ]);
 
-      isValid = sut.validate({ ...UserDataBuilder({}), password: 555 as any });
+      isValid = sut.validate({ ...props, password: 555 as any });
       expect(isValid).toBeFalsy();
       expect(sut.errors['password']).toStrictEqual([
         'password must be a string',
@@ -108,12 +110,28 @@ describe('ClassValidatorFields integration tests', () => {
       ]);
 
       isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: 'f'.repeat(256),
       });
       expect(isValid).toBeFalsy();
       expect(sut.errors['password']).toStrictEqual([
         'password must be shorter than or equal to 100 characters',
+      ]);
+    });
+  });
+
+  describe('Created_At Field', () => {
+    it('Invalidation cases for created_at field', () => {
+      let isValid = sut.validate({ ...props, created_at: 10 as any });
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['created_at']).toStrictEqual([
+        'created_at must be a Date instance',
+      ]);
+
+      isValid = sut.validate({ ...props, created_at: '2023' as any });
+      expect(isValid).toBeFalsy();
+      expect(sut.errors['created_at']).toStrictEqual([
+        'created_at must be a Date instance',
       ]);
     });
   });
