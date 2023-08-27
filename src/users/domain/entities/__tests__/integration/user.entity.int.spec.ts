@@ -65,5 +65,14 @@ describe('UserEntity integration tests', () => {
       props = { ...UserDataBuilder({}), created_at: '2023' as any };
       expect(() => new UserEntity(props)).toThrowError(EntityValidationError);
     });
+
+    it('Should a valid user', () => {
+      expect.assertions(0);
+
+      const props: UserProps = {
+        ...UserDataBuilder({}),
+      };
+      new UserEntity(props);
+    });
   });
 });
